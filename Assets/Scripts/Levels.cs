@@ -25,6 +25,7 @@ public class Levels : MonoBehaviour {
     public Text spaceToStartText;
     public GameObject nonTitleGroup;
     public GameObject credits;
+	public GameObject controlsText;
 
     public Timer timer;
 
@@ -79,6 +80,7 @@ public class Levels : MonoBehaviour {
 		paused = false;
 		Time.timeScale = 1;    	
 		dimensionText.gameObject.SetActive(false);
+		controlsText.SetActive(false);
     	nonTitleGroup.SetActive(true);
     	if (levelIndex == 0) {
 			Tutorial(0);
@@ -341,4 +343,9 @@ public class Levels : MonoBehaviour {
 		}
 		preventFreeze = false;
     }
+
+	public void ToggleControls() {
+		dimensionText.gameObject.SetActive(!dimensionText.gameObject.activeSelf);
+		controlsText.SetActive(!controlsText.activeSelf);
+	}
 }
