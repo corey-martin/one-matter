@@ -43,6 +43,10 @@ public class Levels : MonoBehaviour {
     private bool paused = false;
     private bool isFrozen = false;
 
+    void Awake() {
+    	PlayerPrefs.DeleteAll();
+    }
+
 	// Use this for initialization
 	void Start () {
 		foreach (Transform child in transform) {
@@ -220,6 +224,7 @@ public class Levels : MonoBehaviour {
 				if (levelIndex == 1) {
 					Tutorial(1);
 				}
+				isFrozen = false;
 			} else {
 				Time.timeScale = 0;
 				playIcon.SetActive(false);
@@ -227,8 +232,8 @@ public class Levels : MonoBehaviour {
 				if (levelIndex == 1) {
 					Tutorial(2);
 				}
+				isFrozen = true;
 			}
-			isFrozen = !isFrozen;
 		}
 	}
 
