@@ -93,8 +93,10 @@ public class Levels : MonoBehaviour {
     	dimensionText.text = "ONE MATTER";
     	dimensionText.gameObject.SetActive(true);
     	spaceToStartText.gameObject.SetActive(true);
-    	if (PlayerPrefs.HasKey("LevelIndex")) {
+    	if (PlayerPrefs.HasKey("beatit")) {
     		spaceToStartText.text = "PRESS SPACE TO CONTINUE\n PRESS ESCAPE TO QUIT\n PRESS R TO RESTART";
+		} else if (PlayerPrefs.HasKey("LevelIndex")) {
+    		spaceToStartText.text = "PRESS SPACE TO CONTINUE\n PRESS ESCAPE TO QUIT";
 		} else {
     		spaceToStartText.text = "PRESS SPACE TO START";
 		}
@@ -133,22 +135,24 @@ public class Levels : MonoBehaviour {
 			}
 		}
 
-		if (Input.GetKeyDown("r") || credits.activeSelf && Input.GetKeyDown("space")) {
-			credits.SetActive(false);
-			levels[levelIndex].SetActive(false);
-			levelIndex = 0;
-			GetRealities();
-			levels[levelIndex].SetActive(true);
-			player.position = Vector3.zero;
-			Time.timeScale = 1;
-			levelText.text = "LV" + (levelIndex + 1).ToString();
-			StartCoroutine(AnimateTitle(levels[levelIndex].transform.name));
-			timer.timePassed = 0;
-			if (PlayerPrefs.GetInt("beatit") == 1) {
-				timer.isPlaying = true;
-				showTutorial = false;
+		if (PlayerPrefs.HasKey("beatit")) {
+			if (Input.GetKeyDown("r") || credits.activeSelf && Input.GetKeyDown("space")) {
+				credits.SetActive(false);
+				levels[levelIndex].SetActive(false);
+				levelIndex = 0;
+				GetRealities();
+				levels[levelIndex].SetActive(true);
+				player.position = Vector3.zero;
+				Time.timeScale = 1;
+				levelText.text = "LV" + (levelIndex + 1).ToString();
+				StartCoroutine(AnimateTitle(levels[levelIndex].transform.name));
+				timer.timePassed = 0;
+				if (PlayerPrefs.GetInt("beatit") == 1) {
+					timer.isPlaying = true;
+					showTutorial = false;
+				}
+				preventFreeze = false;
 			}
-			preventFreeze = false;
 		}
 
 		if (paused) {
