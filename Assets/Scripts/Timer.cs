@@ -7,8 +7,8 @@ public class Timer : MonoBehaviour {
 
 	private Text timerText;
 	[HideInInspector] public bool isPlaying = false;
+	[HideInInspector] public bool isCounting = false;
 	[HideInInspector] public float timePassed;
-    [HideInInspector] public float timeToIgnore = 0;
 
     void Awake() {
 		timerText = GetComponent<Text>();
@@ -16,7 +16,9 @@ public class Timer : MonoBehaviour {
     }
 	
 	void Update () {
-		timePassed = Time.realtimeSinceStartup - timeToIgnore;
+		if (isCounting) {
+			timePassed += Time.unscaledDeltaTime;
+		}
 		if (isPlaying) {
 	        timerText.text = timePassed.ToString();
 	    }

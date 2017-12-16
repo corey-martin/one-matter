@@ -41,14 +41,13 @@ public class Levels : MonoBehaviour {
     private bool showTutorial = true;
 
     private bool paused = false;
+    private bool isFrozen = false;
 
 	// Use this for initialization
 	void Start () {
-		bool first = true;
 		foreach (Transform child in transform) {
 			levels.Add(child.gameObject);
-			child.gameObject.SetActive(first);
-			first = false;
+			child.gameObject.SetActive(false);
 		}
 		playIcon.SetActive(true);
 		pauseIcon.SetActive(false);
@@ -56,8 +55,13 @@ public class Levels : MonoBehaviour {
 		audioSource.clip = dimensionAudio[realityIndex];
 		respawn = player.GetComponent<Respawn>();
 		camPosition = cam.transform.position;
-    	if (PlayerPrefs.HasKey("LevelIndex")) {
+    	if (PlayerPrefs.HasKey("LevelIndex") && PlayerPrefs.GetInt("LevelIndex") != 0) {
     		showTutorial = false;
+    		levelIndex = PlayerPrefs.GetInt("LevelIndex");
+    		timer.timePassed = PlayerPrefs.GetFloat("CurrentTime");
+    		levels[levelIndex].SetActive(true);
+    	} else {
+    		levels[0].SetActive(true);
     	}
 		foreach (GameObject tutorial in tutorials) {
 			tutorial.SetActive(false);
@@ -80,6 +84,7 @@ public class Levels : MonoBehaviour {
 		if (PlayerPrefs.GetInt("beatit") == 1) {
 			StartCoroutine(AnimBestTime());
 		}
+		timer.isCounting = true;
 	}
 
 	void PauseGame() {
@@ -94,6 +99,8 @@ public class Levels : MonoBehaviour {
     		spaceToStartText.text = "PRESS SPACE TO START";
 		}
     	nonTitleGroup.SetActive(false);
+		timer.isCounting = false;
+		PlayerPrefs.SetFloat("CurrentTime", timer.timePassed);
 	}
 
 	void Tutorial(int index) {
@@ -118,7 +125,7 @@ public class Levels : MonoBehaviour {
 			FreezeTime();
 		}	
 
-		if (Time.timeScale == 0) {
+		if (isFrozen) {
 			if (Input.GetKeyDown("right")) {
 				ChangeRealities(1);
 			} else if (Input.GetKeyDown("left")) {
@@ -141,7 +148,6 @@ public class Levels : MonoBehaviour {
 				timer.isPlaying = true;
 				showTutorial = false;
 			}
-			timer.timeToIgnore = Time.realtimeSinceStartup;
 			preventFreeze = false;
 		}
 
@@ -218,6 +224,7 @@ public class Levels : MonoBehaviour {
 					Tutorial(2);
 				}
 			}
+			isFrozen = !isFrozen;
 		}
 	}
 
@@ -299,6 +306,7 @@ public class Levels : MonoBehaviour {
 			PlayerPrefs.SetInt("beatit", 1);
 		}
 		PlayerPrefs.SetInt("LevelIndex", levelIndex);
+		PlayerPrefs.SetFloat("CurrentTime", timer.timePassed);
 	}
 
 	// to WaitForSeconds with timeScale at 0
