@@ -107,7 +107,7 @@ public class Levels : MonoBehaviour {
 
 	IEnumerator AnimBestTime() {
 		if (PlayerPrefs.HasKey("BestTime")) {
-			timer.BestTime();
+			timer.BestTime(false);
 			yield return StartCoroutine(WaitForRealSeconds(3f));
 		}
 		timer.isPlaying = true;

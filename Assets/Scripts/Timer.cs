@@ -22,7 +22,11 @@ public class Timer : MonoBehaviour {
 	    }
 	}
 
-	public void BestTime() {
-		timerText.text = "Best Time: \n" + PlayerPrefs.GetFloat("BestTime").ToString();
+	public void BestTime(bool showCurrentTime = true) {
+		if (showCurrentTime) {
+			timerText.text = "Time: \n" + timePassed + "\n" + "Best Time: \n" + PlayerPrefs.GetFloat("BestTime").ToString();
+		} else {
+			timerText.text = "Best Time: \n" + PlayerPrefs.GetFloat("BestTime").ToString();
+		}
 	}
 }
