@@ -38,7 +38,7 @@ public class Respawn : MonoBehaviour {
 	}
 
 	void Update() {	
-		if (Input.GetKeyDown("r")) {
+		if (Input.GetButtonDown("Restart")) {
 			transform.position = Vector3.zero;
 		}
 	}

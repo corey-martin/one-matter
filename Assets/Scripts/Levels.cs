@@ -129,20 +129,20 @@ public class Levels : MonoBehaviour {
 	}
 
 	void Update() {
-		if (Input.GetKeyDown("left ctrl")) {
+		if (Input.GetButtonDown("PauseTime")) {
 			FreezeTime();
 		}	
 
 		if (isFrozen) {
-			if (Input.GetKeyDown("right")) {
+			if (Input.GetButtonDown("DimensionUp")) {
 				ChangeRealities(1);
-			} else if (Input.GetKeyDown("left")) {
+			} else if (Input.GetButtonDown("DimensionDown")) {
 				ChangeRealities(-1);
 			}
 		}
 
 		if (PlayerPrefs.HasKey("beatit")) {
-			if (Input.GetKeyDown("r") || credits.activeSelf && Input.GetKeyDown("space")) {
+			if (Input.GetButtonDown("Restart") || credits.activeSelf && Input.GetButtonDown("Space")) {
 				credits.SetActive(false);
 				levels[levelIndex].SetActive(false);
 				levelIndex = 0;
@@ -162,12 +162,12 @@ public class Levels : MonoBehaviour {
 		}
 
 		if (paused) {
-			if (Input.GetKeyDown("space") || Input.GetKeyDown("left ctrl")) {
+			if (Input.GetButtonDown("Space") || Input.GetButtonDown("PauseTime")) {
 				StartForReal();
 			}
 		}
 
-		if (Input.GetKeyDown("escape") && !preventFreeze) {
+		if (Input.GetButtonDown("Quit") && !preventFreeze) {
 			if (paused) {
 				Application.Quit();
 			} else {
